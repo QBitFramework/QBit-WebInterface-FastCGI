@@ -15,7 +15,7 @@ sub http_header {
 
 sub method {$ENV{'REQUEST_METHOD'}}
 
-sub uri {$ENV{'REQUEST_URI'}}
+sub _uri {$ENV{'REQUEST_URI'}}
 
 sub scheme {$ENV{'SCHEME'}}
 
