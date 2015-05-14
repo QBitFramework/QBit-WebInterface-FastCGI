@@ -57,10 +57,14 @@ sub run {
 
     if (!$self->response->status || $self->response->status == 200) {
         print 'Content-Type: ' . $self->response->content_type . "\n";
-        print 'Content-Disposition: '
-          . 'attachment; filename="'
-          . $self->_escape_filename($self->response->filename) . "\"\n"
-          if $self->response->filename;
+
+        my $filename = $self->response->filename;
+        if (defined($filename)) {
+            utf8::encode($filename) if utf8::is_utf8($filename);
+
+            print 'Content-Disposition: attachment; filename="' . $self->_escape_filename($filename) . "\"\n";
+        }
+
         print "\n", $$data_ref;
     } elsif ($self->response->status == 301 || $self->response->status == 302) {
         print 'Location: ' . $self->response->location . "\n\n";
