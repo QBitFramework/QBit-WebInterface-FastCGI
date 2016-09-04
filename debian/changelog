@@ -1,3 +1,11 @@
+libqbit-webinterface-fastcgi-perl (0.005) raring; urgency=low
+
+  * upload to cpan
+
+  * use utf8::encode for filename
+
+ -- Igor Sverdlov <igor-sverdlov@mail.ru>  Sun, 04 Sep 2016 23:49:55 +0300
+
 libqbit-webinterface-fastcgi-perl (0.004) raring; urgency=low
 
   * Fix description of --process-name parameter.
