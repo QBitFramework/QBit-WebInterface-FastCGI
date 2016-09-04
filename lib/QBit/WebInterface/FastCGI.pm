@@ -41,11 +41,12 @@ sub run {
     my $data_ref = \$self->response->data;
     if (defined($data_ref)) {
         $data_ref = $$data_ref if ref($$data_ref);
-        utf8::encode($$data_ref) if defined($$data_ref);
+        utf8::encode($$data_ref) if defined($$data_ref) && utf8::is_utf8($$data_ref);
     }
     $data_ref = \'' unless defined($$data_ref);
 
     binmode(STDOUT);
+
     my $status = $self->response->status || 200;
     print "Status: $status" . (exists($RESPONSE_TEXT{$status}) ? " $RESPONSE_TEXT{$status}" : '') . "\n";
     print 'Set-Cookie: ' . $_->as_string() . "\n" foreach values(%{$self->response->cookies});
@@ -55,12 +56,16 @@ sub run {
     }
 
     if (!$self->response->status || $self->response->status == 200) {
-        print 'Content-Type: ' . $self->response->content_type . "\n\n";
-        print 'Content-Disposition: '
-          . 'attachment; filename="'
-          . $self->_escape_filename($self->response->filename) . '"'
-          if $self->response->filename;
-        print $$data_ref;
+        print 'Content-Type: ' . $self->response->content_type . "\n";
+
+        my $filename = $self->response->filename;
+        if (defined($filename)) {
+            utf8::encode($filename) if utf8::is_utf8($filename);
+
+            print 'Content-Disposition: attachment; filename="' . $self->_escape_filename($filename) . "\"\n";
+        }
+
+        print "\n", $$data_ref;
     } elsif ($self->response->status == 301 || $self->response->status == 302) {
         print 'Location: ' . $self->response->location . "\n\n";
     } else {
