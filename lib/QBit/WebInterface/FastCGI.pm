@@ -108,3 +108,33 @@ sub make_cmd {
 }
 
 TRUE;
+
+__END__
+
+=encoding utf8
+
+=head1 Name
+ 
+QBit::WebInterface::FastCGI - Package for connect WebInterface with FastCGI.
+
+=head1 GitHub
+
+https://github.com/QBitFramework/QBit-WebInterface-FastCGI
+
+=head1 Install
+
+=over
+
+=item *
+
+cpanm QBit::WebInterface::FastCGI
+
+=item *
+
+apt-get install libqbit-webinterface-fastcgi-perl (http://perlhub.ru/)
+
+=back
+
+For more information. please, see code.
+
+=cut
